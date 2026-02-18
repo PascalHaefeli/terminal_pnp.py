@@ -1,0 +1,36 @@
+stats.py/stats_liavyre.py:
+-implement passives instead of calling hardcoded version in stats
+
+varia:
+-implement first-time setup (per character, per file)
+-get rid of all quit()s in all files
+->done it everywhere except dnd.py - gonna change main() later, anyway
+
+config.py:
+-find a way to not have to set whether a character is a caster or not when in character selection!
+
+actions.py:
+-sort actions and spells before dumping
+->already started, doesn't work yet.
+-implement spell scaling
+
+dnd.py:
+-main loop
+-display functions
+-call actions.py's various functions
+
+proficiencies.py:
+-find a way to set them during character selection and save them (probably as .json instead of .py)
+
+---
+
+nice to have:
+-implement track_ammo and track_weight from config.py
+-implement resistances and effectiveness in health.py
+
+---
+
+what I should have done sooner:
+-implemented folders for char files for multi char support (took a while to replace single character file creation-code)
+-thought about the structure of y_or_n() and implemented it much, much sooner
+-either programmed and used a main loop from the beginning or not have supported input from terminal via a central file until the very end (now I have to do it all over)
