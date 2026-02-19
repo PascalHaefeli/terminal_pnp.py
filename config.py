@@ -2,7 +2,7 @@
 char_name = "liavyre"
 
 # when set to True, you will be prompted to enter your character's name whenever starting this application; otherwise uses default name above
-char_select_on_startup = True
+char_select_on_startup = False
 
 # set to True if your character has spells, including cantrips
 is_caster = True

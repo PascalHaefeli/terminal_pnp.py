@@ -400,7 +400,15 @@ def mod_action():
 
 # casts
 
-def perform_attack(atk):
+def perform_attack():
+    tmp = False
+    while not tmp:
+        name = input("please enter your attack's name:    ")
+        try:
+            atk = attacks[name]
+            tmp = True
+        except:
+            print("there is no saved attack with that name...")
     if atk.is_finesse:
         stat_mod = max(stats_module.str, stats_module.dex)
     else:
@@ -421,7 +429,15 @@ def perform_attack(atk):
         dmg_cast += stats_module.prf_mod
     return print(f"hit cast: {hit_cast}, damage cast: {dmg_cast}, damage type: {atk.dmg_type}")
 
-def perform_spell(spell):
+def perform_spell():
+    tmp = False
+    while not tmp:
+        name = input("please enter your spell's name:    ")
+        try:
+            spell = spells[name]
+            tmp = True
+        except:
+            print("there is no saved spell with that name...")
     # ignore spell slots if spell is a cantrip
     if spell.slot_lv == '0':
         tmp = spell_slots[spell.slot_lv][0]

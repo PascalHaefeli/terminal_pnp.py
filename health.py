@@ -7,7 +7,13 @@ hp_tmp = None
 # not yet implemented, but nice to have, anyway: resistances and effectiveness
 # resistances and weaknesses could be implemented as an optional argument which is used as a key in a dict storing dmg multipliers for each dmg type, which is used to calc dmg
 # dmg is cast to int in main()
-def take_dmg(dmg):
+def take_dmg():
+    tmp = False
+    while not tmp:
+        dmg = input("please enter damage value:    ")
+        tmp, dmg = config.is_pos_int(dmg)
+        if not tmp:
+            print("damage value needs to be a positive integer!")
     global hp, hp_max, hp_tmp
     temp = hp + hp_tmp - dmg
     if temp <= hp:
@@ -23,7 +29,13 @@ def take_dmg(dmg):
     return None
 
 # heal is cast to int in main()
-def heal_dmg(heal):
+def heal_dmg():
+    tmp = False
+    while not tmp:
+        heal = input("please enter heal amount:    ")
+        tmp, heal = config.is_pos_int(heal)
+        if not tmp:
+            print("heal value needs to be a positive integer!")
     global hp, hp_max, hp_tmp
     temp = hp + heal
     if temp >= hp_max:
@@ -35,7 +47,13 @@ def heal_dmg(heal):
     return None
 
 # heal is cast to in in main()
-def add_tmp_hp(heal):
+def add_tmp_hp():
+    tmp = False
+    while not tmp:
+        heal = input("please enter temp hp value:    ")
+        tmp, heal = config.is_pos_int(heal)
+        if not tmp:
+            print("temp hp need to be a positive integer!")
     global hp, hp_max, hp_tmp
     if hp_tmp < heal:
         hp_tmp = heal
