@@ -6,11 +6,11 @@
 "dmg" to make char take [dmg] points of damage
 "heal" to heal [heal] points of damage
 "tmp" to add temp hp
-"inv-a" to append an item to inventory
-"inv-rm" to remove an item from from inventory
-"act-a" to add an action
-"act-rm" to remove an action
-"act-mod" to modify an action
+"inv -a" to append an item to inventory
+"inv -rm" to remove an item from from inventory
+"act -a" to add an action
+"act -rm" to remove an action
+"act -mod" to modify an action
 "atk" to perform an attack
 "spell" to perform a spell
 "slots" to modify max spell slots
@@ -46,6 +46,12 @@ def char_setup():
                 print("invalid answer; please enter 'y' for 'yes' or 'n' for 'no'.")
     return None
 
+def short_rest():
+    pass
+
+def long_rest():
+    pass
+
 def input_loop():
     while True:
         command = input("your turn!    ")
@@ -65,15 +71,15 @@ def input_loop():
                 health_module.heal_dmg()
             case "tmp":
                 health_module.add_tmp_hp()
-            case "inv-a":
+            case "inv -a":
                 inv_module.add_item()
-            case "inv-rm":
+            case "inv -rm":
                 inv_module.rm_item()
-            case "act-a":
+            case "act -a":
                 actions_module.add_action()
-            case "act-rm":
+            case "act -rm":
                 actions_module.rm_action()
-            case "act-mod":
+            case "act -mod":
                 actions_module.mod_action()
             case "atk":
                 actions_module.perform_attack()
