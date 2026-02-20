@@ -13,7 +13,9 @@
 "act -mod" to modify an action
 "atk" to perform an attack
 "spell" to perform a spell
+"spell -u" to perform a spell not listed as an action; only for spells that don't require casts by the caster's player
 "slots" to modify max spell slots
+"kat" to use liavyre's katana (liavyre only)
 """
 
 from sys import argv
@@ -85,8 +87,13 @@ def input_loop():
                 actions_module.perform_attack()
             case "spell":
                 actions_module.perform_spell()
+            case "spell -u":
+                actions_module.cast_unlisted_spell()
             case "slots":
                 actions_module.mod_max_spell_slots()
+            case "kat":
+                actions_module.katana()
+            
 
 def init():
     if config.char_select_on_startup:
@@ -95,6 +102,7 @@ def init():
     health_module.init_health()
     inv_module.init_inventory()
     actions_module.init_actions()
+    input_loop()
     return None
 
 # call input_loop() from within init() once the script is done

@@ -24,6 +24,15 @@ def roll_dice():
         index += 1
     return casts
 
+# rolls n [die]-sided dice
+def roll_dice_script(die_type, n_dice):
+    index = 0
+    casts = []
+    while index < n_dice:
+        casts.append(randint(1, die_type))
+        index += 1
+    return casts
+
 # makes a cast of [percent] percent
 def probability(percent):
     tmp = False

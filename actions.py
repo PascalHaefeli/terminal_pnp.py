@@ -1,6 +1,7 @@
 import importlib
 import pickle
 import json
+import random
 config = importlib.import_module("config")
 cast_module = importlib.import_module("casts")
 stats_module = importlib.import_module(f"{config.char_name}.stats_{config.char_name}")
@@ -132,6 +133,34 @@ def reset_pact_slots():
     with open(f"{config.char_name}/spell_slots_{config.char_name}.json", 'w') as slots:
         json.dump(spell_slots, slots, indent = 4)
     return print(f"pact slots have been reset!")
+
+def occupy_spell_slot(slot_lv):
+    global spell_slots
+    tmp = spell_slots[slot_lv][0]
+    spell_slots[slot_lv][0] = tmp - 1
+    with open(f"{config.char_name}/spell_slots_{config.char_name}.json", 'w') as slots:
+        json.dump(spell_slots, slots, indent = 4)
+    return None
+
+def wild_magic(is_cantrip):
+    if is_cantrip:
+        if random.randint(1, 100) == 1:
+            print("a wild magic appears!")
+            return True
+    else:
+        if random.randint(1, 20) == 1:
+            print("a wild magic appears!")
+            return True
+    return False
+
+def cast_unlisted_spell():
+    slot_lv = input("which level is the spell you want to cast? '0' for cantrips, 'p' for pact spells:    ")
+    if slot_lv != '0':
+        occupy_spell_slot(slot_lv)
+        wild_magic(False)
+    else:
+        wild_magic(True)
+    return print(f"one category {slot_lv} slot has been occupied.")
 
 # manage actions
 
@@ -400,6 +429,19 @@ def mod_action():
 
 # casts
 
+def katana():
+    stat_mod = max(stats_module.str, stats_module.dex)
+    hit_cast = cast_module.roll_dice_script(20, 1)[0]
+    if hit_cast == 20:
+        hit_cast = "nat20"
+    elif hit_cast == 1:
+        hit_cast = "nat1"
+    else:
+        hit_cast += stat_mod + stats_module.prf_mod
+    dmg_cast_slashing = max(cast_module.roll_dice_script(8, 1), cast_module.roll_dice_script(8, 1))[0] + stats_module.prf_mod
+    dmg_cast_radiant = max(cast_module.roll_dice_script(4, 1), cast_module.roll_dice_script(4, 1))[0] + stats_module.prf_mod
+    return print(f"hit cast: {hit_cast}, damage cast (slashing): {dmg_cast_slashing}, damage cast (radiant): {dmg_cast_radiant}, damage types: slashing, radiant")
+
 def perform_attack():
     tmp = False
     while not tmp:
@@ -413,7 +455,7 @@ def perform_attack():
         stat_mod = max(stats_module.str, stats_module.dex)
     else:
         stat_mod = stats_module.str
-    hit_cast = cast_module.roll_dice(20, 1)[0]
+    hit_cast = cast_module.roll_dice_script(20, 1)[0]
     if hit_cast == 20:
         hit_cast = "nat20"
     elif hit_cast == 1:
@@ -423,7 +465,7 @@ def perform_attack():
         if atk.is_proficient:
             hit_cast += stats_module.prf_mod
     dmg_cast = atk.fixed_value
-    for i in cast_module.roll_dice(atk.die_type, atk.n_dice):
+    for i in cast_module.roll_dice_script(atk.die_type, atk.n_dice):
         dmg_cast += i
     if atk.is_proficient:
         dmg_cast += stats_module.prf_mod
@@ -439,36 +481,39 @@ def perform_spell():
         except:
             print("there is no saved spell with that name...")
     # ignore spell slots if spell is a cantrip
-    if spell.slot_lv == '0':
+    if spell.slot_lv != '0':
         tmp = spell_slots[spell.slot_lv][0]
         if tmp > 0:
-            spell_slots[spell.slot_lv][0] = tmp - 1
-            with open(f"{config.char_name}/spell_slots_{config.char_name}.json", 'w') as slots:
-                json.dump(spell_slots, slots, indent = 4)
+            occupy_spell_slot(spell.slot_lv)
+            is_wild_magic = wild_magic(False)
         else:
-            action_name = spell.action_name
-            if spell.slot_lv == 'p':
-                return print(f"cannot cast {action_name} - out of pact slots!")
-            return print(f"cannot cast {action_name} - out of lv {spell.slot_lv} spell slots!")
-    dmg_cast = spell.fixed_value
-    print(f"fixed_value: {spell.fixed_value}")
-    index = 0
-    for i in cast_module.roll_dice(spell.die_type, spell.n_dice):
-        if config.show_calculations:
-            print(f"dmg_cast[{index}]: {i}")
-            index += 1
-        dmg_cast += i
-    if spell.needs_hit_cast:
-        hit_cast = cast_module.roll_dice(20, 1)[0]
-        if config.show_calculations:
-            print(f"hit roll: {hit_cast}, spellcast_mod: {stats_module.stats[stats_module.spellcast_stat]}, prf_mod: {stats_module.prf_mod}")
-        if hit_cast == 20:
-            hit_cast = "nat20"
-        elif hit_cast == 1:
-            hit_cast = "nat1"
-        else:
-            hit_cast += stats_module.stats[stats_module.spellcast_stat] + stats_module.prf_mod
-        return print(f"hit cast: {hit_cast}, damage cast: {dmg_cast}, save type: {spell.save_type}, fixed save: {spell.fixed_save}, spell save dc: {stats_module.spell_save_dc}")
+            print("you're out of spell slots for this level!")
+            return None
     else:
-        return print(f"damage cast: {dmg_cast}, save type: {spell.save_type}, fixed save: {spell.fixed_save}, spell save dc: {stats_module.spell_save_dc}")
-
+        is_wild_magic = wild_magic(True)
+    if not is_wild_magic:
+        dmg_cast = spell.fixed_value
+        print(f"fixed_value: {spell.fixed_value}")
+        index = 0
+        for i in cast_module.roll_dice_script(spell.die_type, spell.n_dice):
+            if config.show_calculations:
+                print(f"dmg_cast[{index}]: {i}")
+                index += 1
+            dmg_cast += i
+        if spell.needs_hit_cast:
+            hit_cast = cast_module.roll_dice_script(20, 1)[0]
+            if config.show_calculations:
+                print(f"hit roll: {hit_cast}, spellcast_mod: {stats_module.stats[stats_module.spellcast_stat]}, prf_mod: {stats_module.prf_mod}")
+            if hit_cast == 20:
+                hit_cast = "nat20"
+            elif hit_cast == 1:
+                hit_cast = "nat1"
+            else:
+                hit_cast += stats_module.stats[stats_module.spellcast_stat] + stats_module.prf_mod
+            return print(f"hit cast: {hit_cast}, damage cast: {dmg_cast}, save type: {spell.save_type}, fixed save: {spell.fixed_save}, spell save dc: {stats_module.spell_save_dc}")
+        else:
+            return print(f"damage cast: {dmg_cast}, save type: {spell.save_type}, fixed save: {spell.fixed_save}, spell save dc: {stats_module.spell_save_dc}")
+    else:
+        return None
+    
+katana()
