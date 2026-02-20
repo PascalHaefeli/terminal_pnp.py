@@ -132,7 +132,7 @@ def reset_pact_slots():
     spell_slots['p'][0] = spell_slots['p'][1]
     with open(f"{config.char_name}/spell_slots_{config.char_name}.json", 'w') as slots:
         json.dump(spell_slots, slots, indent = 4)
-    return print(f"pact slots have been reset!")
+    return None
 
 def occupy_spell_slot(slot_lv):
     global spell_slots
@@ -515,5 +515,4 @@ def perform_spell():
             return print(f"damage cast: {dmg_cast}, save type: {spell.save_type}, fixed save: {spell.fixed_save}, spell save dc: {stats_module.spell_save_dc}")
     else:
         return None
-    
-katana()
+

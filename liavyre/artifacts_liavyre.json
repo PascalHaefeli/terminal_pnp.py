@@ -1,0 +1,14 @@
+{
+    "katanaport": [
+        1,
+        1,
+        true,
+        "teleport with katana"
+    ],
+    "test": [
+        2,
+        2,
+        false,
+        "desc"
+    ]
+}

@@ -29,13 +29,14 @@ def take_dmg():
     return None
 
 # heal is cast to int in main()
-def heal_dmg():
-    tmp = False
-    while not tmp:
-        heal = input("please enter heal amount:    ")
-        tmp, heal = config.is_pos_int(heal)
-        if not tmp:
-            print("heal value needs to be a positive integer!")
+def heal_dmg(heal=False):
+    if not heal:
+        tmp = False
+        while not tmp:
+            heal = input("please enter heal amount:    ")
+            tmp, heal = config.is_pos_int(heal)
+            if not tmp:
+                print("heal value needs to be a positive integer!")
     global hp, hp_max, hp_tmp
     temp = hp + heal
     if temp >= hp_max:
