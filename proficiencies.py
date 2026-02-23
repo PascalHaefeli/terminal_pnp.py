@@ -2,7 +2,6 @@ import json
 import importlib
 config = importlib.import_module("config")
 
-# don't touch this!
 prf = {
     "initiative": 1,
     "str_save": 0,
@@ -61,10 +60,14 @@ def set_prf():
     while not tmp:
         proficiency = input("which proficiency modifier do you want to set:    ")
         try:
-            proficiency = int(proficiency)
-            tmp = True
+            mod = int(input(f"new prf mod for {proficiency}:    "))
         except:
             print("all proficiency modifiers need to be integers!")
+        try:
+            prf[proficiency] = mod
+            tmp = True
+        except:
+            print(f"'{proficiency}' is not a valid proficiency modifier!")
     save_prfs()
     return None
 
@@ -83,3 +86,6 @@ def init_proficiencies():
     load_prfs()
     return None
 
+init_proficiencies()
+set_prf()
+print(prf)

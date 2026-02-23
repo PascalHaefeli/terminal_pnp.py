@@ -29,8 +29,10 @@ import json
   
 config = importlib.import_module("config")
 cast_module = importlib.import_module("casts")
-inv_module = importlib.import_module("inventory")
 health_module = importlib.import_module("health")
+stats_module = importlib.import_module("stats")
+prf_module = importlib.import_module("proficiencies")
+inv_module = importlib.import_module("inventory")
 actions_module = importlib.import_module("actions")
 artifacts_module = importlib.import_module("artifacts")
 
@@ -100,6 +102,35 @@ def input_loop():
                 short_rest()
             case "rest -l" | "long rest":
                 long_rest()
+            case "stats":
+                com = input("which stat do you wish to modify? enter '-a' to set them all anew.    ")
+                match com:
+                    case "-a":
+                        stats_module.stat_setup()
+                    case "str":
+                        stats_module.set_strn()
+                    case "dex":
+                        stats_module.set_dex()
+                    case "con":
+                        stats_module.set_con()
+                    case "int":
+                        stats_module.set_intl()
+                    case "wis":
+                        stats_module.set_wis()
+                    case "cha":
+                        stats_module.set_cha()
+                    case "mv":
+                        stats_module.set_mv()
+                    case "prf":
+                        stats_module.set_prf_mod()
+                    case "spl_stat" | "spellcast_stat":
+                        stats_module.set_spellcast_stat()
+                    case "pact" | "pact_slot_lv":
+                        stats_module.set_pact_slot_lv()
+                    case default:
+                        print("this is not a valid stat!")
+                stats_module.update_stats_dict()
+                stats_module.save_stats()
             # custom
             case "kat" | "katana":
                 actions_module.katana()
@@ -112,6 +143,8 @@ def init():
     if config.char_select_on_startup:
         config.char_select()
     health_module.init_health()
+    stats_module.init_stats()
+    prf_module.init_proficiencies()
     inv_module.init_inventory()
     actions_module.init_actions()
     artifacts_module.init_artifact_abilities()
