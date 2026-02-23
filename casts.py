@@ -1,7 +1,8 @@
 from random import randint
 import importlib
 config = importlib.import_module("config")
-stats_module = importlib.import_module(f"{config.char_name}.stats_{config.char_name}")
+# try except statement and creation of stats_{char_name}.py
+stats_module = importlib.import_module(f"stats")
 
 # rolls n [die]-sided dice
 def roll_dice():
@@ -51,10 +52,11 @@ def probability(percent):
     return percent >= cast
 
 def cast_on_stat():
+    uncasteable = ["mv", "prf_mod", "spellcast_stat", "pact_slot_lv"]
     tmp = False
     while not tmp:
         stat = input("which stat do you want to cast on:    ")
-        if stat not in stats_module.stats:
+        if stat not in stats_module.stats and not stat in uncasteable:
             print("invalid argument; please provide a valid stat from dnd to cast on")
         else:
              tmp = True

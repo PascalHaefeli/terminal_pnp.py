@@ -23,7 +23,6 @@
 """
 
 import importlib
-import os
 import json
 # to be implemented: choose a specific char's config file
 # set char_name and stats in config.py
@@ -34,24 +33,6 @@ inv_module = importlib.import_module("inventory")
 health_module = importlib.import_module("health")
 actions_module = importlib.import_module("actions")
 artifacts_module = importlib.import_module("artifacts")
-
-def char_setup():
-    if not os.path.isdir(f"./{config.char_name}"):
-        tmp = False
-        while not tmp:
-            answer = input(f"is this your character's name: '{config.char_name}'? y/n    ")
-            try:    
-                if config.y_or_n(answer):
-                    os.makedirs(f"./{config.char_name}")
-                    print(f"created a folder for your character named '{config.char_name}' in this directory. all data about your character will be saved there.\nplease don't touch it unless you know what you're doing.")
-                    tmp = True
-                else:
-                    config.char_select()
-                    char_setup()
-                    return None
-            except:
-                print("invalid answer; please enter 'y' for 'yes' or 'n' for 'no'.")
-    return None
 
 def short_rest():
     health_module.heal_dmg(health_module.hp_max // 2)
@@ -122,11 +103,14 @@ def input_loop():
             # custom
             case "kat" | "katana":
                 actions_module.katana()
+            # default
+            case default:
+                print("invalid command")
 
 def init():
+    config.init_settings()
     if config.char_select_on_startup:
         config.char_select()
-    char_setup()
     health_module.init_health()
     inv_module.init_inventory()
     actions_module.init_actions()

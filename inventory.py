@@ -49,4 +49,3 @@ def remove_item():
         create_inventory()
     return None
 
-#init_inventory()

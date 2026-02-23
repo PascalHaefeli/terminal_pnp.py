@@ -4,7 +4,7 @@ import json
 import random
 config = importlib.import_module("config")
 cast_module = importlib.import_module("casts")
-stats_module = importlib.import_module(f"{config.char_name}.stats_{config.char_name}")
+stats_module = importlib.import_module(f"stats")
 
 # global variables
 
