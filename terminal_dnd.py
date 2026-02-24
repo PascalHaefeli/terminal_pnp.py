@@ -35,6 +35,7 @@ prf_module = importlib.import_module("proficiencies")
 inv_module = importlib.import_module("inventory")
 actions_module = importlib.import_module("actions")
 artifacts_module = importlib.import_module("artifacts")
+wallet_module = importlib.import_module("wallet")
 
 def short_rest():
     health_module.heal_dmg(health_module.hp_max // 2)
@@ -133,6 +134,10 @@ def input_loop():
                         print("this is not a valid stat!")
                 stats_module.update_stats_dict()
                 stats_module.save_stats()
+            case "pay":
+                wallet_module.payment()
+            case "payday":
+                wallet_module.payday()
             # custom
             case "kat" | "katana":
                 actions_module.katana()
@@ -150,6 +155,7 @@ def init():
     inv_module.init_inventory()
     actions_module.init_actions()
     artifacts_module.init_artifact_abilities()
+    wallet_module.init_wallet()
     input_loop()
     return None
 
