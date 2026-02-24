@@ -153,6 +153,3 @@ def init_wallet():
     load_wallet()
     return None
 
-init_wallet()
-payday()
-print(wallet)

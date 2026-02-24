@@ -1,18 +1,17 @@
-# enter stat mods
-strn = -1
-dex = 3
+# default stat mods; will be overridden
+strn = 0
+dex = 0
 con = 0
 intl = 0
-wis = 1
-cha = 3
+wis = 0
+cha = 0
 mv = 30
 prf_mod = 3
 spellcast_stat = "cha"
-pact_slot_lv = "3"
-
-# bases = [strn, dex, con, intl, wis, cha, mv, prf_mod, spellcast_stat, pact_slot_lv]
+pact_slot_lv = "0"
 
 ### don't touch below here ###
+
 import importlib
 import pickle
 config = importlib.import_module("config")

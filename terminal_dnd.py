@@ -1,5 +1,6 @@
 ### arguments to call specific functions ###
 """
+"ls" to list stuff; there's a lot to be listed...
 "dice" to roll n [die]-sided dice
 "100" to make a cast of [percent] percent probability
 "cast" to make a cast on a specified stat
@@ -19,6 +20,9 @@
 "artifacts -rm" to remove artifact abilities
 "rest -s" or "short rest" to make a short rest
 "rest -l" or "long rest" to make a long rest
+"stats" to set a stat; -a to set all
+"pay" to make a payment
+"payday" to add money to the wallet
 "kat" to use liavyre's katana (liavyre only)
 """
 

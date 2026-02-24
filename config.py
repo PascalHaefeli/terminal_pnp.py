@@ -1,6 +1,8 @@
 import json
 import os
 
+### the following bools will be overridden with values from settings files (settings_global.json and settings_{char_name}.json) ###
+
 # when set to True, you will be prompted to enter your character's name whenever starting this application; otherwise uses default name above
 char_select_on_startup = False
 

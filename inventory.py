@@ -1,9 +1,8 @@
+import json
 import importlib
 config = importlib.import_module("config")
-inventory = []
 
-from sys import argv
-import json
+inventory = []
 
 def create_inventory():
     print(f"cannot retrieve inventory from {config.char_name}/inventory_{config.char_name}.json; no file with said name exists in this directory. would you like to create one?")
@@ -41,7 +40,8 @@ def add_item():
 
 def remove_item():
     global inventory
-    inventory = [item for item in inventory if item["name"].lower() != argv[3].lower()]
+    item_name = input("which item do you want to remove?    ")
+    inventory = [item for item in inventory if item["name"] != item_name]
     try:
         with open(f"{config.char_name}/inventory_{config.char_name}.json", 'w') as file:
             json.dump(inventory, file, indent = 4)
