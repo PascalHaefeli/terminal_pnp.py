@@ -59,15 +59,17 @@ def set_prf():
     tmp = False
     while not tmp:
         proficiency = input("which proficiency modifier do you want to set:    ")
-        try:
-            mod = int(input(f"new prf mod for {proficiency}:    "))
-        except:
-            print("all proficiency modifiers need to be integers!")
-        try:
+        if proficiency in prf:
+            try:
+                mod = int(input(f"new prf mod for {proficiency}:    "))
+            except:
+                print("all proficiency modifiers need to be integers!")
             prf[proficiency] = mod
             tmp = True
-        except:
+        else:
             print(f"'{proficiency}' is not a valid proficiency modifier!")
+        
+        
     save_prfs()
     return None
 
@@ -86,6 +88,3 @@ def init_proficiencies():
     load_prfs()
     return None
 
-init_proficiencies()
-set_prf()
-print(prf)

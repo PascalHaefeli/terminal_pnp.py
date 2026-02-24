@@ -123,6 +123,8 @@ def input_loop():
                         stats_module.set_mv()
                     case "prf":
                         stats_module.set_prf_mod()
+                    case "prf -a":
+                        stats_module.proficiencies_setup()
                     case "spl_stat" | "spellcast_stat":
                         stats_module.set_spellcast_stat()
                     case "pact" | "pact_slot_lv":
