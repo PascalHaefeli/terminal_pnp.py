@@ -17,6 +17,8 @@ import pickle
 config = importlib.import_module("config")
 prf_module = importlib.import_module(f"proficiencies")
 
+dir = ""
+
 # dicts for export
 stats = {
     "str": strn,
@@ -75,7 +77,7 @@ def get_stat(stat):
 def load_stats():
     global stats, strn, dex, con, intl, wis, cha, mv, prf_mod, spellcast_stat, pact_slot_lv
     try:
-        with open(f"{config.char_name}/stats_{config.char_name}.pkl", 'rb') as file:
+        with open(f"{dir}/{config.char_name}/stats_{config.char_name}.pkl", 'rb') as file:
             stats = pickle.load(file)
     except:
         return create_stats_file()
@@ -92,7 +94,7 @@ def load_stats():
     return None
 
 def save_stats():
-    with open(f"{config.char_name}/stats_{config.char_name}.pkl", 'wb') as file:
+    with open(f"{dir}/{config.char_name}/stats_{config.char_name}.pkl", 'wb') as file:
         pickle.dump(stats, file)
     return None
 
@@ -223,13 +225,13 @@ def stat_setup():
 def create_stats_file():
     print(f"no file with stats for {config.char_name} was found. initiating stat setup...")
     stat_setup()
-    with open(f"{config.char_name}/stats_{config.char_name}.pkl", 'xb') as file:
+    with open(f"{dir}/{config.char_name}/stats_{config.char_name}.pkl", 'xb') as file:
         pickle.dump(stats, file)
     return None
 
-# init; had to create init_stats() for consistency, or I would make my future self wonder why I don't call init_stats() in the main script during init()
-
-def init_stats():
+def init_stats(module_dir):
+    global dir
+    dir = module_dir
     load_stats()
     return None
 

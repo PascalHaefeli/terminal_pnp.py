@@ -8,6 +8,7 @@ stats_module = importlib.import_module(f"stats")
 
 # global variables
 
+dir = ""
 attacks = {}
 spells = {}
 spell_slots = {}
@@ -98,7 +99,7 @@ def init_spell_slots():
         print("the number of each spell slot must be a positive int!") # i'm not actually checking for positive ints, but who cares? if it's negative, it'll be < 1, so it's the same as '0'
         init_spell_slots()
         return None
-    with open(f"{config.char_name}/spell_slots_{config.char_name}.json", 'x') as slots:
+    with open(f"{dir}/{config.char_name}/spell_slots_{config.char_name}.json", 'x') as slots:
         json.dump(spell_slots, slots, indent = 4)
     return print("spell slots initialized successfully!")
 
@@ -109,7 +110,7 @@ def mod_max_spell_slots():
         tmp2, tmp = config.is_pos_int(tmp)
         if tmp2:
             spell_slots[slot][1] = tmp
-            with open(f"{config.char_name}/spell_slots_{config.char_name}.json", 'w') as slots:
+            with open(f"{dir}/{config.char_name}/spell_slots_{config.char_name}.json", 'w') as slots:
                 json.dump(spell_slots, slots, indent = 4)
                 return print(f"slot '{slot}' has been set to the new max of {tmp}")
         else:
@@ -123,14 +124,14 @@ def reset_spell_slots():
     global spell_slots
     for i in spell_slots:
         spell_slots[i][0] = spell_slots[i][1]
-    with open(f"{config.char_name}/spell_slots_{config.char_name}.json", 'w') as slots:
+    with open(f"{dir}/{config.char_name}/spell_slots_{config.char_name}.json", 'w') as slots:
         json.dump(spell_slots, slots, indent = 4)
     return print(f"all spell slots have been reset!")
     
 def reset_pact_slots():
     global spell_slots
     spell_slots['p'][0] = spell_slots['p'][1]
-    with open(f"{config.char_name}/spell_slots_{config.char_name}.json", 'w') as slots:
+    with open(f"{dir}/{config.char_name}/spell_slots_{config.char_name}.json", 'w') as slots:
         json.dump(spell_slots, slots, indent = 4)
     return None
 
@@ -138,7 +139,7 @@ def occupy_spell_slot(slot_lv):
     global spell_slots
     tmp = spell_slots[slot_lv][0]
     spell_slots[slot_lv][0] = tmp - 1
-    with open(f"{config.char_name}/spell_slots_{config.char_name}.json", 'w') as slots:
+    with open(f"{dir}/{config.char_name}/spell_slots_{config.char_name}.json", 'w') as slots:
         json.dump(spell_slots, slots, indent = 4)
     return None
 
@@ -164,23 +165,24 @@ def cast_unlisted_spell():
 
 # manage actions
 
-def init_actions():
-    global attacks, spells, spell_slots
+def init_actions(module_dir):
+    global attacks, spells, spell_slots, dir
+    dir = module_dir
     try:
-        with open(f"{config.char_name}/attacks_{config.char_name}.pkl", "rb") as atks:
+        with open(f"{dir}/{config.char_name}/attacks_{config.char_name}.pkl", "rb") as atks:
             attacks = pickle.load(atks)
     except:
-        with open(f"{config.char_name}/attacks_{config.char_name}.pkl", "wb") as atks:
+        with open(f"{dir}/{config.char_name}/attacks_{config.char_name}.pkl", "wb") as atks:
             pickle.dump(attacks, atks)
     try:
-        with open(f"{config.char_name}/spells_{config.char_name}.pkl", "rb") as spls:
+        with open(f"{dir}/{config.char_name}/spells_{config.char_name}.pkl", "rb") as spls:
             spells = pickle.load(spls)
     except:
-        with open(f"{config.char_name}/spells_{config.char_name}.pkl", "wb") as spls:
+        with open(f"{dir}/{config.char_name}/spells_{config.char_name}.pkl", "wb") as spls:
             pickle.dump(spells, spls)
     if config.is_caster:
         try:
-            with open(f"{config.char_name}/spell_slots_{config.char_name}.json", 'r') as slots:
+            with open(f"{dir}/{config.char_name}/spell_slots_{config.char_name}.json", 'r') as slots:
                 spell_slots = json.load(slots)
         except:
             init_spell_slots()
@@ -304,7 +306,7 @@ def add_action():
             print(f"{action_name} = {attacks[action_name]}")
             sort_actions("attack")
             # write current attacks dict to pkl file in binary
-            with open(f"{config.char_name}/attacks_{config.char_name}.pkl", "wb") as atks:
+            with open(f"{dir}/{config.char_name}/attacks_{config.char_name}.pkl", "wb") as atks:
                 pickle.dump(attacks, atks)
         # spell
         elif action_type == 's':
@@ -356,7 +358,7 @@ def add_action():
             action_set = True
             print(f"{action_name} = {spells[action_name]}")
             sort_actions("spell")
-            with open(f"{config.char_name}/spells_{config.char_name}.pkl", "wb") as spls:
+            with open(f"{dir}/{config.char_name}/spells_{config.char_name}.pkl", "wb") as spls:
                 pickle.dump(spells, spls)
     return None
 
@@ -376,7 +378,7 @@ def rm_action():
         try:
             del attacks[action_name]
             sort_actions("attack")
-            with open(f"{config.char_name}/attacks_{config.char_name}.pkl", "wb") as atks:
+            with open(f"{dir}/{config.char_name}/attacks_{config.char_name}.pkl", "wb") as atks:
                 pickle.dump(attacks, atks)
         except:
             print("no attack with the specified name was set for this character!")
@@ -385,7 +387,7 @@ def rm_action():
         try:
             del spells[action_name]
             sort_actions("spell")
-            with open(f"{config.char_name}/spells_{config.char_name}.pkl", "wb") as spls:
+            with open(f"{dir}/{config.char_name}/spells_{config.char_name}.pkl", "wb") as spls:
                 pickle.dump(spells, spls)
         except:
             print("no spell with the specified name was set for this character!")
@@ -412,7 +414,7 @@ def mod_action():
     if action_type == 'a':
         if hasattr(attacks[action_name], var_name):
             setattr(attacks[action_name], var_name, new_value)
-            with open(f"{config.char_name}/attacks_{config.char_name}.pkl", "wb") as atks:
+            with open(f"{dir}/{config.char_name}/attacks_{config.char_name}.pkl", "wb") as atks:
                 pickle.dump(attacks, atks)
             print(f"the value of '{var_name}' for the attack named '{action_name}' was changed to '{new_value}'.")
         else:
@@ -421,7 +423,7 @@ def mod_action():
     else:
         if hasattr(spells[action_name], var_name):
             setattr(spells[action_name], var_name, new_value)
-            with open(f"{config.char_name}/spells_{config.char_name}.pkl", "wb") as spls:
+            with open(f"{dir}/{config.char_name}/spells_{config.char_name}.pkl", "wb") as spls:
                 pickle.dump(spells, spls)
         else:
             print("no spell with the specified name was set for this character!")
@@ -516,3 +518,29 @@ def perform_spell():
     else:
         return None
 
+# display functions
+
+# get type from case statement in main script
+def display_actions(action_type):
+    match action_type:
+        case 'a':
+            print("\nattacks:")
+            for i in attacks:
+                print(i)
+        case 's':
+            print("\nspells:")
+            for i in spells:
+                print(i)
+        case 'b':
+            print("\nattacks:")
+            for i in attacks:
+                print(i)
+            print("\nspells:")
+            for i in spells:
+                print(i)
+    return None
+
+#init_actions()
+#print(attacks)
+#add_action()
+#display_actions('b')

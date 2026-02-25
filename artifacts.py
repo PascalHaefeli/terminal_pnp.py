@@ -2,6 +2,7 @@ import importlib
 import json
 config = importlib.import_module("config")
 
+dir = ""
 artifact_abilities = {}
 
 def sort_artifact_abilities():
@@ -32,7 +33,7 @@ def add_artifact_ability():
         else:
             print("that is not a valid answer! answer 'y' for 'yes' or 'n' for 'no'!")
     artifact_abilities = sort_artifact_abilities()
-    with open(f"{config.char_name}/artifacts_{config.char_name}.json", 'w') as file:
+    with open(f"{dir}/{config.char_name}/artifacts_{config.char_name}.json", 'w') as file:
             json.dump(artifact_abilities, file, indent = 4)
     return print(f"your artifact ability '{slot_key}' has successfully been added!")
 
@@ -43,7 +44,7 @@ def remove_artifact_ability():
         print(f"an ability with the name {slot_key} has not been added!")
         return None
     del artifact_abilities[slot_key]
-    with open(f"{config.char_name}/artifacts_{config.char_name}.json", 'w') as file:
+    with open(f"{dir}/{config.char_name}/artifacts_{config.char_name}.json", 'w') as file:
             json.dump(artifact_abilities, file, indent = 4)
     return print(f"your artifact ability '{slot_key}' has successfully been removed!")
 
@@ -52,7 +53,7 @@ def create_artifacts():
     answer = input("y/n    ")
     if answer == "y":
         try:
-            with open(f"{config.char_name}/artifacts_{config.char_name}.json", 'x') as file:
+            with open(f"{dir}/{config.char_name}/artifacts_{config.char_name}.json", 'x') as file:
                 json.dump(artifact_abilities, file, indent = 4)
         except:
             print(f"cannot create file {config.char_name}/artifacts_{config.char_name}.json; a file with said name already exists in this directory")
@@ -67,7 +68,7 @@ def use_artifact_ability():
     tmp = artifact_abilities[slot_key][0]
     if tmp > 0:
         artifact_abilities[slot_key][0] = tmp - 1
-        with open(f"{config.char_name}/artifacts_{config.char_name}.json", 'w') as file:
+        with open(f"{dir}/{config.char_name}/artifacts_{config.char_name}.json", 'w') as file:
             json.dump(artifact_abilities, file, indent = 4)
     else:
         if artifact_abilities[slot_key][2]:
@@ -77,10 +78,11 @@ def use_artifact_ability():
     return None
 
 
-def init_artifact_abilities():
-    global artifact_abilities
+def init_artifact_abilities(module_dir):
+    global artifact_abilities, dir
+    dir = module_dir
     try:
-        with open(f"{config.char_name}/artifacts_{config.char_name}.json", 'r') as file:
+        with open(f"{dir}/{config.char_name}/artifacts_{config.char_name}.json", 'r') as file:
             artifact_abilities = json.load(file)
     except:
         create_artifacts()

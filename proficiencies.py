@@ -2,6 +2,8 @@ import json
 import importlib
 config = importlib.import_module("config")
 
+dir = ""
+
 prf = {
     "initiative": 1,
     "str_save": 0,
@@ -34,21 +36,21 @@ prf = {
 }
 
 def save_prfs():
-    with open(f"{config.char_name}/prfs_{config.char_name}.json", 'w') as file:
+    with open(f"{dir}/{config.char_name}/prfs_{config.char_name}.json", 'w') as file:
         json.dump(prf, file, indent = 4)
     return None
 
 def create_prfs_file():
     print(f"no file with proficiencies for {config.char_name} was found. initiating proficiency setup...")
     proficiencies_setup()
-    with open(f"{config.char_name}/prfs_{config.char_name}.json", 'x') as file:
+    with open(f"{dir}/{config.char_name}/prfs_{config.char_name}.json", 'x') as file:
         json.dump(prf, file, indent = 4)
     return None
 
 def load_prfs():
     global prf
     try:
-        with open(f"{config.char_name}/prfs_{config.char_name}.json", 'r') as file:
+        with open(f"{dir}/{config.char_name}/prfs_{config.char_name}.json", 'r') as file:
             prf = json.load(file)
     except:
         create_prfs_file()
@@ -84,7 +86,9 @@ def proficiencies_setup():
                 print("all proficiency modifiers need to be integers!")
     return None
 
-def init_proficiencies():
+def init_proficiencies(module_dir):
+    global dir
+    dir = module_dir
     load_prfs()
     return None
 

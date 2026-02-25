@@ -28,8 +28,9 @@
 
 import importlib
 import json
-# to be implemented: choose a specific char's config file
-# set char_name and stats in config.py
+from pathlib import Path
+
+dir = Path(__file__).parent
   
 config = importlib.import_module("config")
 cast_module = importlib.import_module("casts")
@@ -48,7 +49,7 @@ def short_rest():
     for i in artifacts:
         if artifacts[i][2]:
             artifacts[i][0] = artifacts[i][1]
-    with open(f"{config.char_name}/artifacts_{config.char_name}.json", 'w') as file:
+    with open(f"{dir}/{config.char_name}/artifacts_{config.char_name}.json", 'w') as file:
             json.dump(artifacts, file, indent = 4)
     return print("short rest complete!")
 
@@ -58,7 +59,7 @@ def long_rest():
     artifacts = artifacts_module.artifact_abilities
     for i in artifacts:
         artifacts[i][0] = artifacts[i][1]
-    with open(f"{config.char_name}/artifacts_{config.char_name}.json", 'w') as file:
+    with open(f"{dir}/{config.char_name}/artifacts_{config.char_name}.json", 'w') as file:
             json.dump(artifacts, file, indent = 4)
     return print("long rest complete!")
 
@@ -142,24 +143,32 @@ def input_loop():
                 wallet_module.payment()
             case "payday":
                 wallet_module.payday()
+            # display functions
+            case "display attacks":
+                actions_module.display_actions('a')
+            case "display spells":
+                actions_module.display_actions('s')
+            case "display actions":
+                actions_module.display_actions('b')
             # custom
             case "kat" | "katana":
                 actions_module.katana()
             # default
             case default:
                 print("invalid command")
+        print("---")
 
 def init():
-    config.init_settings()
+    config.init_settings(dir)
     if config.char_select_on_startup:
         config.char_select()
-    health_module.init_health()
-    stats_module.init_stats()
-    prf_module.init_proficiencies()
-    inv_module.init_inventory()
-    actions_module.init_actions()
-    artifacts_module.init_artifact_abilities()
-    wallet_module.init_wallet()
+    health_module.init_health(dir)
+    stats_module.init_stats(dir)
+    prf_module.init_proficiencies(dir)
+    inv_module.init_inventory(dir)
+    actions_module.init_actions(dir)
+    artifacts_module.init_artifact_abilities(dir)
+    wallet_module.init_wallet(dir)
     input_loop()
     return None
 

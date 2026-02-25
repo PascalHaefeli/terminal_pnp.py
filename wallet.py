@@ -2,6 +2,8 @@ import json
 import importlib
 config = importlib.import_module("config")
 
+dir = ""
+
 wallet = {
     "p" : 0,
     "g" : 10,
@@ -19,19 +21,19 @@ values_in_copper = {
 }
 
 def create_wallet():
-    with open(f"{config.char_name}/wallet_{config.char_name}.json", 'x') as file:
+    with open(f"{dir}/{config.char_name}/wallet_{config.char_name}.json", 'x') as file:
         json.dump(wallet, file, indent = 4)
     return None
 
 def save_to_wallet():
-    with open(f"{config.char_name}/wallet_{config.char_name}.json", 'w') as file:
+    with open(f"{dir}/{config.char_name}/wallet_{config.char_name}.json", 'w') as file:
         json.dump(wallet, file, indent = 4)
     return None
 
 def load_wallet():
     global wallet
     try:
-        with open(f"{config.char_name}/wallet_{config.char_name}.json", 'r') as file:
+        with open(f"{dir}/{config.char_name}/wallet_{config.char_name}.json", 'r') as file:
             wallet = json.load(file)
     except:
         create_wallet()
@@ -149,7 +151,9 @@ def payday():
     save_to_wallet()
     return None
 
-def init_wallet():
+def init_wallet(module_dir):
+    global dir
+    dir = module_dir
     load_wallet()
     return None
 

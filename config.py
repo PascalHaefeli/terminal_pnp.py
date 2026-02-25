@@ -1,6 +1,8 @@
 import json
 import os
 
+dir = ""
+
 ### the following bools will be overridden with values from settings files (settings_global.json and settings_{char_name}.json) ###
 
 # when set to True, you will be prompted to enter your character's name whenever starting this application; otherwise uses default name above
@@ -62,23 +64,23 @@ def char_select():
 # change settings
 
 def save_global_settings():
-    with open(f"settings.json", 'w') as file:
+    with open(f"{dir}/settings.json", 'w') as file:
         json.dump(settings_global, file, indent = 4)
     return None
 
 def create_global_settings():
     print("creating global settings...")
-    with open(f"settings.json", 'x') as file:
+    with open(f"{dir}/settings.json", 'x') as file:
         json.dump(settings_global, file, indent = 4)
     return print("global settings file created")
 
 def save_char_settings():
-    with open(f"{char_name}/settings_{char_name}.json", 'w') as file:
+    with open(f"{dir}/{char_name}/settings_{char_name}.json", 'w') as file:
         json.dump(settings_character, file, indent = 4)
     return None
 
 def create_char_settings():
-    with open(f"{char_name}/settings_{char_name}.json", 'x') as file:
+    with open(f"{dir}/{char_name}/settings_{char_name}.json", 'x') as file:
         json.dump(settings_character, file, indent = 4)
     return None
 
@@ -195,10 +197,11 @@ def char_setup():
                 print("invalid answer; please enter 'y' for 'yes' or 'n' for 'no'.")
     return None
 
-def init_settings():
-    global settings_global, settings_character, char_select_on_startup, char_name, is_caster, advanced_attack, show_calculations
+def init_settings(module_dir):
+    global settings_global, settings_character, char_select_on_startup, char_name, is_caster, advanced_attack, show_calculations, dir
+    dir = module_dir
     try:
-        with open(f"settings.json", 'r') as file:
+        with open(f"{dir}/settings.json", 'r') as file:
             settings_global = json.load(file)
         char_select_on_startup = settings_global["char_select_on_startup"]
         char_name = settings_global["char_name"]
@@ -217,12 +220,12 @@ def init_settings():
         update_global_settings()
         create_global_settings()
     try:
-        with open(f"{char_name}/settings_{char_name}.json", 'r') as file:
+        with open(f"{dir}/{char_name}/settings_{char_name}.json", 'r') as file:
             settings_character = json.load(file)
         is_caster = settings_character["is_caster"]
         advanced_attack = settings_character["advanced_attack"]
     except:
-        print(f"no settings for a character name '{char_name}' have been found. initializing character setup...")
+        print(f"no settings for a character named '{char_name}' have been found. initializing character setup...")
         tmp = False
         while not tmp:
             answer = input("is your character a caster? y/n    ")
