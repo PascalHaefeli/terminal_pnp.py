@@ -1,6 +1,7 @@
 import json
 import importlib
 config = importlib.import_module("config")
+display_module = importlib.import_module("display")
 
 inventory = {}
 dir = ""
@@ -58,5 +59,17 @@ def remove_item():
             json.dump(inventory, file, indent = 4)
     except:
         create_inventory()
+    return None
+
+def display_inventory():
+    display_module.dict_keys(inventory, "inventory")
+    return None
+
+def display_item():
+    name = input("which item do you want to display?    ")
+    if name in inventory:
+        display_module.dict_value_of_key(inventory, name)
+    else:
+        print(f"there is no item called '{name}' in your inventory!")
     return None
 

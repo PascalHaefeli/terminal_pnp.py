@@ -23,6 +23,19 @@
 "stats" to set a stat; -a to set all
 "pay" to make a payment
 "payday" to add money to the wallet
+"ds attacks" to display all attacks
+"ds spells" to display all spells
+"ds attack info" to display an attack's attributes
+"ds spell info" to display a spell's info
+"ds spell slots" to display all spell slots
+"ds wallet" to display the wallet
+"ds artifacts" to display all artifact abilities
+"ds artifact info" to display an artifact's attributes
+"ds settings" to display all settings
+"ds hp" to display current, max and tmp hp
+"ds inv" to display the entire inventory
+"ds item" to display an item's description
+"ds prf" to display all proficiencies
 "kat" to use liavyre's katana (liavyre only)
 """
 
@@ -65,10 +78,10 @@ def long_rest():
 
 def input_loop():
     while True:
-        command = input("your turn!    ")
+        command = input("\nyour turn!    ")
         match command:
             case "q":
-                print("exiting terminal_dnd.py...")
+                print("\nexiting terminal_dnd.py...\n")
                 quit()
             case "dice":
                 cast_module.roll_dice()
@@ -144,18 +157,40 @@ def input_loop():
             case "payday":
                 wallet_module.payday()
             # display functions
-            case "display attacks":
+            case "ds attacks":
                 actions_module.display_actions('a')
-            case "display spells":
+            case "ds spells":
                 actions_module.display_actions('s')
-            case "display actions":
+            case "ds actions":
                 actions_module.display_actions('b')
+            case "ds attack info":
+                actions_module.display_action_info('a')
+            case "ds spell info":
+                actions_module.display_action_info('s')
+            case "ds spell slots":
+                actions_module.display_spell_slots()
+            case "ds wallet":
+                wallet_module.display_wallet()
+            case "ds artifacts":
+                artifacts_module.display_artifacts()
+            case "ds artifact info":
+                artifacts_module.display_artifact_info()
+            case "ds settings":
+                config.display_settings()
+            case "ds hp":
+                health_module.display_health()
+            case "ds inv":
+                inv_module.display_inventory()
+            case "ds item":
+                inv_module.display_item()
+            case "ds prf":
+                prf_module.display_prfs()
             # custom
             case "kat" | "katana":
                 actions_module.katana()
             # default
             case default:
-                print("invalid command")
+                print("\ninvalid command")
         print("---")
 
 def init():

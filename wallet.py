@@ -1,6 +1,7 @@
 import json
 import importlib
 config = importlib.import_module("config")
+display_module = importlib.import_module(f"display")
 
 dir = ""
 
@@ -155,5 +156,9 @@ def init_wallet(module_dir):
     global dir
     dir = module_dir
     load_wallet()
+    return None
+
+def display_wallet():
+    display_module.dict_keys_and_values(wallet, "wallet")
     return None
 

@@ -1,5 +1,7 @@
 import json
 import os
+import importlib
+display_module = importlib.import_module(f"display")
 
 dir = ""
 
@@ -237,5 +239,11 @@ def init_settings(module_dir):
         update_char_settings()
         char_setup()
         create_char_settings()
+    return None
+
+def display_settings():
+    display_module.dict_keys_and_values(settings_global, "settings_global")
+    print("---")
+    display_module.dict_keys_and_values(settings_character, "settings_character")
     return None
 

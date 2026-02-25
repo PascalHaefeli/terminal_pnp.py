@@ -1,6 +1,7 @@
 import json
 import importlib
 config = importlib.import_module("config")
+display_module = importlib.import_module("display")
 
 dir = ""
 
@@ -90,5 +91,9 @@ def init_proficiencies(module_dir):
     global dir
     dir = module_dir
     load_prfs()
+    return None
+
+def display_prfs():
+    display_module.dict_keys_and_values(prf, "proficiencies")
     return None
 

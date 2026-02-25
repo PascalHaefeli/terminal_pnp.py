@@ -525,15 +525,24 @@ def perform_spell():
 def display_actions(action_type):
     match action_type:
         case 'a':
-            display_module.display_dict_keys(attacks)
+            display_module.dict_keys(attacks, "attacks")
         case 's':
-            display_module.display_dict_keys(spells)
+            display_module.dict_keys(spells, "spells")
         case 'b':
-            display_module.display_dict_keys(attacks)
-            display_module.display_dict_keys(spells)
+            display_module.dict_keys(attacks, "attacks")
+            display_module.dict_keys(spells, "spells")
     return None
 
-#init_actions()
-#print(attacks)
-#add_action()
-#display_actions('b')
+def display_action_info(action_type):
+    match action_type:
+        case 'a':
+            name = input("---\nwhich attack do you want to display?    ")
+            display_module.object_attributes(attacks[name], name)
+        case 's':
+            name = input("---\nwhich spell do you want to display?    ")
+            display_module.object_attributes(spells[name], name)
+    return None
+
+def display_spell_slots():
+    display_module.dict_keys_and_values(spell_slots, "spell_slots")
+    return None

@@ -1,6 +1,7 @@
 import importlib
 import json
 config = importlib.import_module("config")
+display_module = importlib.import_module(f"display")
 
 dir = ""
 artifact_abilities = {}
@@ -86,5 +87,23 @@ def init_artifact_abilities(module_dir):
             artifact_abilities = json.load(file)
     except:
         create_artifacts()
+    return None
+
+def display_artifacts():
+    display_module.dict_keys(artifact_abilities, "artifact_abilities")
+    return None
+
+def display_artifact_info():
+    name = input("\nwhich artifact ability do you want to display?    ")
+    try:
+        info = artifact_abilities[name]
+        print(f"\n---\n{name}")
+        i = 0
+        var_names = ["current_slots", "max_slots", "recharge_on_short_rest", "desc"]
+        while i < len(info):
+            print(f"|\n| \u2014\u2014 {var_names[i]}: {info[i]}")
+            i += 1
+    except:
+        print(f"there is no artifact ability named '{name}'!")
     return None
 

@@ -1,5 +1,7 @@
 import importlib
 config = importlib.import_module("config")
+display_module = importlib.import_module("display")
+
 hp = None
 hp_max = None
 hp_tmp = None
@@ -105,3 +107,11 @@ def init_health(module_dir):
             print("your hp values need to be positive ints! max hp needs to be greater than 0!")
     return None
 
+def display_health():
+    health = {
+        "hp" : hp,
+        "max hp" : hp_max,
+        "temp hp" : hp_tmp
+    }
+    display_module.dict_keys_and_values(health, "health")
+    return None
