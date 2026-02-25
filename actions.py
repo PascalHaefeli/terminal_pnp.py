@@ -5,6 +5,7 @@ import random
 config = importlib.import_module("config")
 cast_module = importlib.import_module("casts")
 stats_module = importlib.import_module(f"stats")
+display_module = importlib.import_module(f"display")
 
 # global variables
 
@@ -524,20 +525,12 @@ def perform_spell():
 def display_actions(action_type):
     match action_type:
         case 'a':
-            print("\nattacks:")
-            for i in attacks:
-                print(i)
+            display_module.display_dict_keys(attacks)
         case 's':
-            print("\nspells:")
-            for i in spells:
-                print(i)
+            display_module.display_dict_keys(spells)
         case 'b':
-            print("\nattacks:")
-            for i in attacks:
-                print(i)
-            print("\nspells:")
-            for i in spells:
-                print(i)
+            display_module.display_dict_keys(attacks)
+            display_module.display_dict_keys(spells)
     return None
 
 #init_actions()
