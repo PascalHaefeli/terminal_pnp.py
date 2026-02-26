@@ -56,22 +56,26 @@ artifacts_module = importlib.import_module("artifacts")
 wallet_module = importlib.import_module("wallet")
 
 def short_rest():
+    print("health has been restored by half max hp!")
     health_module.heal_dmg(health_module.hp_max // 2)
     actions_module.reset_pact_slots()
     artifacts = artifacts_module.artifact_abilities
     for i in artifacts:
         if artifacts[i][2]:
             artifacts[i][0] = artifacts[i][1]
+    print("artifact ability cooldowns have been reset!")
     with open(f"{dir}/{config.char_name}/artifacts_{config.char_name}.json", 'w') as file:
             json.dump(artifacts, file, indent = 4)
-    return print("short rest complete!")
+    return None
 
 def long_rest():
+    print("health has been restored completely!")
     health_module.heal_dmg(health_module.hp_max)
     actions_module.reset_spell_slots()
     artifacts = artifacts_module.artifact_abilities
     for i in artifacts:
         artifacts[i][0] = artifacts[i][1]
+    print("artifact ability cooldowns have been reset!")
     with open(f"{dir}/{config.char_name}/artifacts_{config.char_name}.json", 'w') as file:
             json.dump(artifacts, file, indent = 4)
     return print("long rest complete!")
@@ -79,26 +83,32 @@ def long_rest():
 def input_loop():
     while True:
         command = input("\nyour turn!    ")
+        print("")
         match command:
             case "q":
                 print("\nexiting terminal_dnd.py...\n")
                 quit()
             case "dice":
-                cast_module.roll_dice()
+                print(f"\ncasts: {cast_module.roll_dice()}")
             case "100":
-                cast_module.probability()
+                tmp = cast_module.probability()
+                if tmp:
+                    print("\ncast successful!")
+                else:
+                    print("\ncast failed!")
             case "cast":
                 cast_module.cast_on_stat()
             case "dmg":
                 health_module.take_dmg()
             case "heal":
+                print("")
                 health_module.heal_dmg()
             case "tmp":
                 health_module.add_tmp_hp()
             case "inv -a":
                 inv_module.add_item()
             case "inv -rm":
-                inv_module.rm_item()
+                inv_module.remove_item()
             case "act -a":
                 actions_module.add_action()
             case "act -rm":
@@ -126,28 +136,40 @@ def input_loop():
                 match com:
                     case "-a":
                         stats_module.stat_setup()
+                        print("all stats have been modified successfully!")
                     case "str":
                         stats_module.set_strn()
+                        print("str has been set successfully!")
                     case "dex":
                         stats_module.set_dex()
+                        print("dex has been set successfully!")
                     case "con":
                         stats_module.set_con()
+                        print("con has been set successfully!")
                     case "int":
                         stats_module.set_intl()
+                        print("int has been set successfully!")
                     case "wis":
                         stats_module.set_wis()
+                        print("wis has been set successfully!")
                     case "cha":
                         stats_module.set_cha()
+                        print("cha has been set successfully!")
                     case "mv":
                         stats_module.set_mv()
+                        print("mv has been set successfully!")
                     case "prf":
                         stats_module.set_prf_mod()
+                        print("prf mod has been set successfully!")
                     case "prf -a":
                         stats_module.proficiencies_setup()
+                        print("all prf mods have been set successfully!")
                     case "spl_stat" | "spellcast_stat":
                         stats_module.set_spellcast_stat()
+                        print("spellcasting stat has been set successfully!")
                     case "pact" | "pact_slot_lv":
                         stats_module.set_pact_slot_lv()
+                        print("pact slot level has been set successfully!")
                     case default:
                         print("this is not a valid stat!")
                 stats_module.update_stats_dict()

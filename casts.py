@@ -14,7 +14,7 @@ def roll_dice():
             print("the number of sides for your die must be a positive integer!")
     tmp = False
     while not tmp:
-        n_dice = input(f"how many d{die_type} do you want to roll?    ")
+        n_dice = input(f"\nhow many d{die_type} do you want to roll?    ")
         tmp, n_dice = config.is_pos_int(n_dice)
         if not tmp:
             print("the amount of dice to roll needs to be a positive integer!")
@@ -35,7 +35,7 @@ def roll_dice_script(die_type, n_dice):
     return casts
 
 # makes a cast of [percent] percent
-def probability(percent):
+def probability():
     tmp = False
     while not tmp:
         try:
@@ -66,5 +66,5 @@ def cast_on_stat():
     elif cast == 1:
         return "nat1"
     mod = stats_module.get_stat(stat)
-    return cast + mod
+    return print(f"\ncast on {stat}: {cast + mod}")
 

@@ -78,7 +78,6 @@ def use_artifact_ability():
             print("you're out of slots for your ability! your slots will be reset on your next long rest!")
     return None
 
-
 def init_artifact_abilities(module_dir):
     global artifact_abilities, dir
     dir = module_dir

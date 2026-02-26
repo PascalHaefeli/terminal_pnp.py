@@ -36,7 +36,6 @@ def add_item():
     global inventory
     item_name = input("please enter your item's name:    ")
     item_desc = input("please enter your item's description:    ")
-    print(type(inventory))
     inventory[item_name] = item_desc
     sort_inventory()
     try:
@@ -44,7 +43,7 @@ def add_item():
             json.dump(inventory, file, indent = 4)
     except:
         create_inventory()
-    return None
+    return print(f"{item_name} was successfully added to inventory!")
 
 def remove_item():
     global inventory
@@ -59,7 +58,7 @@ def remove_item():
             json.dump(inventory, file, indent = 4)
     except:
         create_inventory()
-    return None
+    return print(f"{item_name} was successfully removed from inventory!")
 
 def display_inventory():
     display_module.dict_keys(inventory, "inventory")

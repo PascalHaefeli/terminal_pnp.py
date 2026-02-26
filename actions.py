@@ -127,14 +127,14 @@ def reset_spell_slots():
         spell_slots[i][0] = spell_slots[i][1]
     with open(f"{dir}/{config.char_name}/spell_slots_{config.char_name}.json", 'w') as slots:
         json.dump(spell_slots, slots, indent = 4)
-    return print(f"all spell slots have been reset!")
+    return print("all spell slots have been reset!")
     
 def reset_pact_slots():
     global spell_slots
     spell_slots['p'][0] = spell_slots['p'][1]
     with open(f"{dir}/{config.char_name}/spell_slots_{config.char_name}.json", 'w') as slots:
         json.dump(spell_slots, slots, indent = 4)
-    return None
+    return print("pact slots have been reset!")
 
 def occupy_spell_slot(slot_lv):
     global spell_slots
@@ -284,7 +284,7 @@ def add_action():
                     )
                 attacks[action_name] = instance
                 action_set = True
-                print(f"{action_name} set as an advanced attack")
+                print(f"{action_name} has been successfully set as an advanced attack!")
             # standard attack
             else:
                 #exec(f"{action_name} = attack({action_name}, {desc}, {n_dice}, {die_type}, {fixed_value}, {dmg_type}, {range}, {long_range}, {is_finesse}, {is_proficient}, {can_dual_wield})")
@@ -303,8 +303,7 @@ def add_action():
                     )
                 action_set = True
                 attacks[action_name] = instance
-                print(f"{action_name} has been set as an attack")
-            print(f"{action_name} = {attacks[action_name]}")
+                print(f"{action_name} has been successfully set as an attack!")
             sort_actions("attack")
             # write current attacks dict to pkl file in binary
             with open(f"{dir}/{config.char_name}/attacks_{config.char_name}.pkl", "wb") as atks:
@@ -355,9 +354,8 @@ def add_action():
                 aoe_type
                 )
             spells[action_name] = instance
-            print(f"{action_name} has been set as a spell")
+            print(f"{action_name} has been successfully set as a spell!")
             action_set = True
-            print(f"{action_name} = {spells[action_name]}")
             sort_actions("spell")
             with open(f"{dir}/{config.char_name}/spells_{config.char_name}.pkl", "wb") as spls:
                 pickle.dump(spells, spls)
@@ -392,7 +390,7 @@ def rm_action():
                 pickle.dump(spells, spls)
         except:
             print("no spell with the specified name was set for this character!")
-    return None
+    return print(f"{action_name} has successfully been removed!")
 
 def mod_action():
     global attacks, spells, needs_int
@@ -433,7 +431,7 @@ def mod_action():
 # casts
 
 def katana():
-    stat_mod = max(stats_module.str, stats_module.dex)
+    stat_mod = max(stats_module.strn, stats_module.dex)
     hit_cast = cast_module.roll_dice_script(20, 1)[0]
     if hit_cast == 20:
         hit_cast = "nat20"
@@ -536,11 +534,17 @@ def display_actions(action_type):
 def display_action_info(action_type):
     match action_type:
         case 'a':
-            name = input("---\nwhich attack do you want to display?    ")
-            display_module.object_attributes(attacks[name], name)
+            try:
+                name = input("---\nwhich attack do you want to display?    ")
+                display_module.object_attributes(attacks[name], name)
+            except:
+                return print(f"no attack called {name} was found!")
         case 's':
-            name = input("---\nwhich spell do you want to display?    ")
-            display_module.object_attributes(spells[name], name)
+            try:
+                name = input("---\nwhich spell do you want to display?    ")
+                display_module.object_attributes(spells[name], name)
+            except:
+                return print(f"no spell called {name} was found!")
     return None
 
 def display_spell_slots():

@@ -29,7 +29,7 @@ def take_dmg():
         print(f"{config.char_name} is dying!")
     with open(f"{dir}/{config.char_name}/hp_{config.char_name}.txt", "w", encoding = "utf-8") as file:
         file.write(f"{hp}\n{hp_max}\n{hp_tmp}")
-    return None
+    return print(f"\ncurrent hp: {hp}")
 
 # heal is cast to int in main()
 def heal_dmg(heal=False):
@@ -48,7 +48,7 @@ def heal_dmg(heal=False):
         hp = temp
     with open(f"{dir}/{config.char_name}/hp_{config.char_name}.txt", "w", encoding = "utf-8") as file:
         file.write(f"{hp}\n{hp_max}\n{hp_tmp}")
-    return None
+    return print(f"current hp: {hp}")
 
 # heal is cast to in in main()
 def add_tmp_hp():
@@ -63,7 +63,7 @@ def add_tmp_hp():
         hp_tmp = heal
         with open(f"{dir}/{config.char_name}/hp_{config.char_name}.txt", "w", encoding = "utf-8") as file:
             file.write(f"{hp}\n{hp_max}\n{hp_tmp}")
-    return None
+    return print(f"\ncurrent hp: {hp}, tmp hp: {hp_tmp}")
 
 def set_and_check_hp():
     global hp, hp_max, hp_tmp
