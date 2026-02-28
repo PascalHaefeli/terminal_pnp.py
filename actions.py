@@ -14,6 +14,8 @@ attacks = {}
 spells = {}
 spell_slots = {}
 needs_int = ["die_type", "n_dice", "fixed_value", "fixed_save"]
+# spells that don't require casts or saves and are thus not saved as actions, but only with descriptions in a .json
+unlisted = {}
 
 # classes
 
@@ -167,7 +169,7 @@ def cast_unlisted_spell():
 # manage actions
 
 def init_actions(module_dir):
-    global attacks, spells, spell_slots, dir
+    global attacks, spells, spell_slots, unlisted, dir
     dir = module_dir
     try:
         with open(f"{dir}/{config.char_name}/attacks_{config.char_name}.pkl", "rb") as atks:
@@ -187,6 +189,11 @@ def init_actions(module_dir):
                 spell_slots = json.load(slots)
         except:
             init_spell_slots()
+        try:
+            with open(f"{dir}/{config.char_name}/unlisted_spells_{config.char_name}.json", "r") as unl:
+                unlisted = json.load(unl)
+        except:
+            create_unlisted()
     return None
 
 def sort_actions(action_type):
@@ -200,7 +207,7 @@ def sort_actions(action_type):
 
 def add_action():
     global attacks, spells
-    # any action type
+    # any other action type
     tmp = False
     # specify action type
     while not tmp:
@@ -360,6 +367,32 @@ def add_action():
             with open(f"{dir}/{config.char_name}/spells_{config.char_name}.pkl", "wb") as spls:
                 pickle.dump(spells, spls)
     return None
+
+def sort_unlisted():
+    global unlisted
+    unlisted = dict(sorted(unlisted.items()))
+    return None
+
+def create_unlisted():
+    try:
+        with open(f"{dir}/{config.char_name}/unlisted_spells_{config.char_name}.json", 'x') as file:
+            json.dump(unlisted, file, indent = 4)
+    except:
+        print(f"cannot create file {config.char_name}/inventory_{config.char_name}.json; a file with said name already exists in this directory")
+    return None
+
+def add_unlisted():
+    global unlisted
+    spell_name = input("please enter your spell's name:    ")
+    spell_desc = input("please enter your spell's description:    ")
+    unlisted[spell_name] = spell_desc
+    sort_unlisted()
+    try:
+        with open(f"{dir}/{config.char_name}/unlisted_spells_{config.char_name}.json", 'w') as file:
+            json.dump(unlisted, file, indent = 4)
+    except:
+        create_unlisted()
+    return print(f"{spell_name} was successfully added as an unlisted spell!")
 
 def rm_action():
     global attacks, spells
@@ -550,3 +583,8 @@ def display_action_info(action_type):
 def display_spell_slots():
     display_module.dict_keys_and_values(spell_slots, "spell_slots")
     return None
+
+def display_unlisted():
+    display_module.dict_keys_and_values_long(unlisted, "unlisted spells")
+    return None
+

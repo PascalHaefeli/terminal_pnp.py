@@ -121,6 +121,8 @@ def input_loop():
                 actions_module.perform_spell()
             case "spell -u":
                 actions_module.cast_unlisted_spell()
+            case "spell -au":
+                actions_module.add_unlisted()
             case "slots":
                 actions_module.mod_max_spell_slots()
             case "artifacts -a":
@@ -183,6 +185,7 @@ def input_loop():
                 actions_module.display_actions('a')
             case "ds spells":
                 actions_module.display_actions('s')
+                actions_module.display_unlisted()
             case "ds actions":
                 actions_module.display_actions('b')
             case "ds attack info":

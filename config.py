@@ -11,10 +11,10 @@ dir = ""
 char_select_on_startup = False
 
 # default character name; a name is required for accessing files
-char_name = "liavyre"
+char_name = ""
 
 # default value, overridden if char_select_on_startup; set to True if your character has spells, including cantrips
-is_caster = True
+is_caster = False
 
 # set to True if you want full attack properties; uses 'simplified' attacks by default
 advanced_attack = False
