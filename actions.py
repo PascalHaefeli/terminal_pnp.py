@@ -329,7 +329,7 @@ def add_action():
                     tmp = True
                 else:
                     print("your spell's level must be an integer in between 0 (cantrip) and 9 (highest possible spell level).")
-            duration = input("please enter your spells duration:    ")
+            duration = input("please enter your spell's duration:    ")
             save_type = input("please enter your save type:    ")
             fixed_save = input("please enter your fixed save:    ")
             aoe_size = input("please enter your aoe_size:    ")
