@@ -50,14 +50,11 @@ def remove_artifact_ability():
     return print(f"your artifact ability '{slot_key}' has successfully been removed!")
 
 def create_artifacts():
-    print(f"cannot retrieve artifact abilities from {config.char_name}/abilities_{config.char_name}.json; no file with said name exists in this directory. would you like to create one?")
-    answer = input("y/n    ")
-    if answer == "y":
-        try:
-            with open(f"{dir}/{config.char_name}/artifacts_{config.char_name}.json", 'x') as file:
-                json.dump(artifact_abilities, file, indent = 4)
-        except:
-            print(f"cannot create file {config.char_name}/artifacts_{config.char_name}.json; a file with said name already exists in this directory")
+    try:
+        with open(f"{dir}/{config.char_name}/artifacts_{config.char_name}.json", 'x') as file:
+            json.dump(artifact_abilities, file, indent = 4)
+    except:
+        print(f"cannot create file {config.char_name}/artifacts_{config.char_name}.json; a file with said name already exists in this directory")
     return None
 
 def use_artifact_ability():
