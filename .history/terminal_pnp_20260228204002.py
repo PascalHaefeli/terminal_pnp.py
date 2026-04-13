@@ -1,5 +1,6 @@
 ### arguments to call specific functions ###
 """
+"ls" to list stuff; there's a lot to be listed...
 "dice" to roll n [die]-sided dice
 "100" to make a cast of [percent] percent probability
 "cast" to make a cast on a specified stat
@@ -14,8 +15,6 @@
 "atk" to perform an attack
 "spell" to perform a spell
 "spell -u" to perform a spell not listed as an action; only for spells that don't require casts by the caster's player
-"spell -au" to add an unlisted spell
-"spell -rmu" to remove an unlisted spell
 "slots" to modify max spell slots
 "artifacts -a" to add artifact abilities
 "artifacts -rm" to remove artifact abilities
@@ -124,8 +123,6 @@ def input_loop():
                 actions_module.cast_unlisted_spell()
             case "spell -au":
                 actions_module.add_unlisted()
-            case "spell -rmu":
-                actions_module.rm_unlisted()
             case "slots":
                 actions_module.mod_max_spell_slots()
             case "artifacts -a":
@@ -213,15 +210,13 @@ def input_loop():
                 inv_module.display_item()
             case "ds prf":
                 prf_module.display_prfs()
-            case "ds stats":
-                stats_module.display_stats()
             # custom
             case "kat" | "katana":
                 actions_module.katana()
             # default
             case default:
                 print("\ninvalid command")
-        #print("---")
+        print("---")
 
 def init():
     config.init_settings(dir)

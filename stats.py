@@ -10,12 +10,11 @@ prf_mod = 3
 spellcast_stat = "cha"
 pact_slot_lv = "0"
 
-### don't touch below here ###
-
 import importlib
 import pickle
 config = importlib.import_module("config")
 prf_module = importlib.import_module(f"proficiencies")
+display_module = importlib.import_module("display")
 
 dir = ""
 
@@ -71,6 +70,10 @@ def get_stat(stat):
         return stats[stat] + prf_mod * prf_module.prf[stat]
     else:
         return passives[stat]
+    
+def display_stats():
+    display_module.dict_keys_and_values(stats, "proficiencies")
+    return None
 
 # save and load pickles
 

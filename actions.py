@@ -394,6 +394,18 @@ def add_unlisted():
         create_unlisted()
     return print(f"{spell_name} was successfully added as an unlisted spell!")
 
+def rm_unlisted():
+    global unlisted
+    spell_name = input("which unlisted spell do you want to remove?    ")
+    try:
+        del unlisted[spell_name]
+        sort_actions("unlisted")
+        with open(f"{dir}/{config.char_name}/unlisted_{config.char_name}.pkl", "wb") as unl:
+            pickle.dump(unlisted, unl)
+    except:
+        print("no unlisted spell with the specified name was set for this character!")
+    return print(f"{spell_name} has successfully been removed!")
+
 def rm_action():
     global attacks, spells
     # pick action type
@@ -476,6 +488,14 @@ def katana():
     dmg_cast_radiant = max(cast_module.roll_dice_script(4, 1), cast_module.roll_dice_script(4, 1))[0] + stats_module.prf_mod
     return print(f"hit cast: {hit_cast}, damage cast (slashing): {dmg_cast_slashing}, damage cast (radiant): {dmg_cast_radiant}, damage types: slashing, radiant")
 
+def get_dmg_cast(atk):
+    dmg_cast = atk.fixed_value
+    for i in cast_module.roll_dice_script(atk.die_type, atk.n_dice):
+        dmg_cast += i
+    if atk.is_proficient:
+        dmg_cast += stats_module.prf_mod
+    return dmg_cast
+
 def perform_attack():
     tmp = False
     while not tmp:
@@ -486,9 +506,9 @@ def perform_attack():
         except:
             print("there is no saved attack with that name...")
     if atk.is_finesse:
-        stat_mod = max(stats_module.str, stats_module.dex)
+        stat_mod = max(stats_module.strn, stats_module.dex)
     else:
-        stat_mod = stats_module.str
+        stat_mod = stats_module.strn
     hit_cast = cast_module.roll_dice_script(20, 1)[0]
     if hit_cast == 20:
         hit_cast = "nat20"
@@ -498,11 +518,11 @@ def perform_attack():
         hit_cast += stat_mod
         if atk.is_proficient:
             hit_cast += stats_module.prf_mod
-    dmg_cast = atk.fixed_value
-    for i in cast_module.roll_dice_script(atk.die_type, atk.n_dice):
-        dmg_cast += i
-    if atk.is_proficient:
-        dmg_cast += stats_module.prf_mod
+    # insert savage attacker here!
+    # if is_savage_attacker:
+    #   dmg_cast = max(get_dmg_cast(atk), get_dmg_cast(atk))
+    # else:
+    dmg_cast = get_dmg_cast(atk)
     return print(f"hit cast: {hit_cast}, damage cast: {dmg_cast}, damage type: {atk.dmg_type}")
 
 def perform_spell():
@@ -515,8 +535,9 @@ def perform_spell():
         except:
             print("there is no saved spell with that name...")
     # ignore spell slots if spell is a cantrip
-    if spell.slot_lv != '0':
-        tmp = spell_slots[spell.slot_lv][0]
+    tmp = str(spell.slot_lv)
+    if tmp != '0':
+        tmp = spell_slots[tmp][0]
         if tmp > 0:
             occupy_spell_slot(spell.slot_lv)
             is_wild_magic = wild_magic(False)
@@ -587,4 +608,3 @@ def display_spell_slots():
 def display_unlisted():
     display_module.dict_keys_and_values_long(unlisted, "unlisted spells")
     return None
-

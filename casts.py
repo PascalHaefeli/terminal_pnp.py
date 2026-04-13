@@ -68,3 +68,4 @@ def cast_on_stat():
     mod = stats_module.get_stat(stat)
     return print(f"\ncast on {stat}: {cast + mod}")
 
+cast_on_stat()

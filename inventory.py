@@ -64,7 +64,7 @@ def display_inventory():
 def display_item():
     name = input("which item do you want to display?    ")
     if name in inventory:
-        display_module.dict_value_of_key(inventory, name)
+        display_module.dict_value_of_key_long(inventory, name)
     else:
         print(f"there is no item called '{name}' in your inventory!")
     return None

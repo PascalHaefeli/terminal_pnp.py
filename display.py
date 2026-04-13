@@ -1,5 +1,6 @@
 import os
 
+# i wanted some space left free at the end of the terminal cause it looks nice, so i subtract 2 from terminal_size
 terminal_length = os.get_terminal_size()[0] - 2
 
 def format_string(string):
@@ -50,8 +51,13 @@ def dict_keys_and_values_long(dictionary, name):
         print(f"|\n| \u2014\u2014 {i}:\n| {text}")
     return None
 
+def dict_value_of_key_long(dictionary, key):
+    text = format_string(dictionary[key])
+    print(f"\n\u2014\u2014 {key}:\n| {text}")
+    return None
+
 def dict_value_of_key(dictionary, key):
-    print(f"\n---\n{key}\n-\n{dictionary[key]}")
+    print(f"\n---\n {key}:\n {dictionary[key]}---")
     return None
 
 def object_attributes(obj, name):
@@ -60,8 +66,3 @@ def object_attributes(obj, name):
 
 # custom display function for artifacts as artifacts are stored in a dict, where keys are associated with 4-tuples
 # i made it directly in artifacts.py; structure is similar to that of dict_keys_and_values, but i couldn't just call it from there
-
-text = "You create up to four torch-sized lights within range, making them appear as torches, lanterns, or glowing orbs that hover in the air for the duration. You can also combine the four lights into one glowing vaguely humanoid form of Medium size. Whichever form you choose, each light sheds dim light in a 10-foot radius. As a bonus action on your turn, you can move the lights up to 60 feet to a new spot within range. A light must be within 20 feet of another light created by this spell, and a light winks out if it exceeds the spell's range."
-short = "this is a much shorter sample text for debugging! this is a much shorter sample text for debugging! this is a much shorter sample text for debugging!"
-#print(format_string(text))
-
