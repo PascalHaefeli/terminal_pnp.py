@@ -67,7 +67,10 @@ spell_save_dc = stats[spellcast_stat] + prf_mod + 8
 
 def get_stat(stat):
     if stat[:4] != "pas_":
-        return stats[stat] + prf_mod * prf_module.prf[stat]
+        if stat in prf_module.prf:
+            return stats[stat] + prf_mod * prf_module.prf[stat]
+        else:
+            return stats[stat]
     else:
         return passives[stat]
     

@@ -56,7 +56,9 @@ def cast_on_stat():
     tmp = False
     while not tmp:
         stat = input("which stat do you want to cast on:    ")
-        if stat not in stats_module.stats and not stat in uncasteable:
+        if stat in uncasteable:
+            print(f"invalid argument; cannot cast on {stat}")
+        elif stat not in stats_module.stats:
             print("invalid argument; please provide a valid stat from dnd to cast on")
         else:
              tmp = True
@@ -67,5 +69,3 @@ def cast_on_stat():
         return "nat1"
     mod = stats_module.get_stat(stat)
     return print(f"\ncast on {stat}: {cast + mod}")
-
-cast_on_stat()
