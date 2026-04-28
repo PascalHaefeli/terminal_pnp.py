@@ -320,15 +320,15 @@ def add_action():
             tmp = False
             while not tmp:
                 slot_lv = input("what level is your spell? enter '0' if it's a cantrip:    ")
-                try:
-                    if slot_lv != "p":
-                        slot_lv = int(slot_lv)
-                except:
+                if slot_lv != "p" and not slot_lv.isnumeric:
                     print("your spell's level must be an integer or 'p', if its a pact spell.")
-                if 0 <= slot_lv <= 9 or slot_lv == "p":
-                    tmp = True
                 else:
-                    print("your spell's level must be an integer in between 0 (cantrip) and 9 (highest possible spell level).")
+                    if slot_lv == 'p':
+                        tmp = True
+                    elif 0 <= int(slot_lv) <= 9:
+                        tmp = True
+                    else:
+                        print("your spell's level must be an integer in between 0 (cantrip) and 9 (highest possible spell level).")
             duration = input("please enter your spell's duration:    ")
             save_type = input("please enter your save type:    ")
             fixed_save = input("please enter your fixed save:    ")
@@ -535,7 +535,7 @@ def perform_spell():
         except:
             print("there is no saved spell with that name...")
     # ignore spell slots if spell is a cantrip
-    tmp = str(spell.slot_lv)
+    tmp = spell.slot_lv
     if tmp != '0':
         tmp = spell_slots[tmp][0]
         if tmp > 0:
@@ -555,7 +555,7 @@ def perform_spell():
                 print(f"dmg_cast[{index}]: {i}")
                 index += 1
             dmg_cast += i
-        if spell.needs_hit_cast:
+        if config.y_or_n(spell.needs_hit_cast):
             hit_cast = cast_module.roll_dice_script(20, 1)[0]
             if config.show_calculations:
                 print(f"hit roll: {hit_cast}, spellcast_mod: {stats_module.stats[stats_module.spellcast_stat]}, prf_mod: {stats_module.prf_mod}")
